@@ -1,12 +1,10 @@
-function addCourse() {
-    var row = document.createElement('div');
-    row.className = 'course-row';
-    row.innerHTML = `
-        <label>Course:</label>
-        <input type="text" name="course[]" required>
-        <label>Credits:</label>
-        <input type="number" name="credits[]" min="1" required>
-        <label>Grade:</label>
+function addCourseRow() {
+    const container = document.getElementById('course-container');
+    const newRow = document.createElement('div');
+    newRow.className = 'course-row';
+    newRow.innerHTML = `
+        <input type="text" name="course[]" placeholder="Course Name" required>
+        <input type="number" name="credits[]" placeholder="Credits" min="1" required>
         <select name="grade[]">
             <option value="4.0">A</option>
             <option value="3.0">B</option>
@@ -14,15 +12,16 @@ function addCourse() {
             <option value="1.0">D</option>
             <option value="0.0">F</option>
         </select>
-        <button type="button" onclick="this.parentNode.remove()">Remove</button>`;
-    document.getElementById('courses').appendChild(row);
+        <button type="button" onclick="this.parentElement.remove()">x</button>
+    `;
+    container.appendChild(newRow);
 }
 
 function validateForm() {
-    var credits = document.querySelectorAll('[name="credits[]"]');
-    for (var i = 0; i < credits.length; i++) {
+    const credits = document.getElementsByName('credits[]');
+    for (let i = 0; i < credits.length; i++) {
         if (credits[i].value <= 0) {
-            alert("Credit hours must be positive numbers.");
+            alert("Credits must be a positive number!");
             return false;
         }
     }

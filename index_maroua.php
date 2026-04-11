@@ -1,26 +1,23 @@
 <?php
+$conn = new mysqli("localhost", "root", "", "gpa_db");
+if ($conn->connect_error) { die("Connection failed: " . $conn->connect_error); }
 $gpa = "";
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $courses = $_POST['course'];
     $credits = $_POST['credits'];
     $grades = $_POST['grade'];
-
-    $totalPoints = 0;
-    $totalCredits = 0;
-
+    $totalPoints = 0; $totalCredits = 0;
     for ($i = 0; $i < count($courses); $i++) {
         $c_hours = floatval($credits[$i]);
         $c_grade = floatval($grades[$i]);
-
         if ($c_hours > 0) {
             $totalPoints += ($c_hours * $c_grade);
             $totalCredits += $c_hours;
         }
     }
-
     if ($totalCredits > 0) {
         $gpa = number_format($totalPoints / $totalCredits, 2);
+        $conn->query("INSERT INTO students_gpa (course_name, gpa_result) VALUES ('Semester GPA', '$gpa')");
     }
 }
 ?>
